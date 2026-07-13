@@ -24,10 +24,10 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
-        [Route("{PublicId: Guid}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid Id)
+        [Route("{PublicId:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid PublicId)
         {
-            var result = await _taskService.GetTaskByIdAsync(Id);
+            var result = await _taskService.GetTaskByIdAsync(PublicId);
             if(result == null)
             {
                 return NotFound();
@@ -37,14 +37,18 @@ namespace TaskManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] AddTaskRequestDTO addTaskRequestDTO)
         {
-            var taskDTO = _taskService.CreateTaskAsync(addTaskRequestDTO);
-            return CreatedAtAction(nameof(GetById), new {id = taskDTO.Id}, taskDTO);
+            var taskDTO = await _taskService.CreateTaskAsync(addTaskRequestDTO);
+            return CreatedAtAction(nameof(GetById), new {PublicId = taskDTO.PublicId}, taskDTO);
         }
-        [HttpPut("{publicId:guid}")]
-        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequestDTO updateTaskRequestDTO, [FromRoute] Guid Id)
+        [HttpPut("{PublicId:guid}")] 
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequestDTO updateTaskRequestDTO, [FromRoute] Guid PublicId)
         {
             var userDetails = await _userService.GetByPublicIdAsync(updateTaskRequestDTO.AssignToPublicId);
-            var result = await _taskService.UpdateTaskAsync(updateTaskRequestDTO, Id, userDetails);
+            if (userDetails == null)
+            {
+                return NotFound("AssignToPublicId not found");
+            }
+            var result = await _taskService.UpdateTaskAsync(updateTaskRequestDTO, PublicId, userDetails);
             if(result == null)
             {
                 return NotFound();

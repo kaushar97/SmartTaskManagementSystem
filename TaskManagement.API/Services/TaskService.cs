@@ -32,6 +32,7 @@ namespace TaskManagement.API.Services
             taskDomainModel = await _taskRepository.CreateTaskAsync(taskDomainModel);
             return new TaskDTO
             {
+                PublicId = taskDomainModel.PublicId,
                 Title = taskDomainModel.Title,
                 Description = taskDomainModel.Description,
                 Status = taskDomainModel.Status,
@@ -48,6 +49,7 @@ namespace TaskManagement.API.Services
 
             return new TaskDTO
             {
+                PublicId = taskDomainModel.PublicId,
                 Title = taskDomainModel.Title,
                 Description = taskDomainModel.Description,
                 Status = taskDomainModel.Status,
@@ -95,6 +97,7 @@ namespace TaskManagement.API.Services
             if (taskDomainModel == null) { return null; }
             return new TaskDTO
             {
+                PublicId = taskDomainModel.PublicId,
                 Title = taskDomainModel.Title,
                 Description = taskDomainModel.Description,
                 Status = taskDomainModel.Status,

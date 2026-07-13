@@ -6,6 +6,7 @@ namespace TaskManagement.API.Model.DTO
 {
     public class TaskDTO
     {
+        public Guid PublicId { get; set; } 
         public required string Title { get; set; }
         public required string Description { get; set; }
         public TskStatus Status { get; set; }
