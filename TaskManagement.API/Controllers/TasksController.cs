@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Model.Domain;
 using TaskManagement.API.Model.DTO;
@@ -18,12 +19,14 @@ namespace TaskManagement.API.Controllers
             _userService = userService;
         }
         [HttpGet]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetAll() 
         { 
             return Ok(await _taskService.GetAllTasksAsync());
         }
 
         [HttpGet]
+        [Authorize(Roles = "Reader,Writer")]
         [Route("{PublicId:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid PublicId)
         {
@@ -35,12 +38,14 @@ namespace TaskManagement.API.Controllers
             return Ok(result);
         }
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateTask([FromBody] AddTaskRequestDTO addTaskRequestDTO)
         {
             var taskDTO = await _taskService.CreateTaskAsync(addTaskRequestDTO);
             return CreatedAtAction(nameof(GetById), new {PublicId = taskDTO.PublicId}, taskDTO);
         }
-        [HttpPut("{PublicId:guid}")] 
+        [HttpPut("{PublicId:guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequestDTO updateTaskRequestDTO, [FromRoute] Guid PublicId)
         {
             var userDetails = await _userService.GetByPublicIdAsync(updateTaskRequestDTO.AssignToPublicId);
@@ -57,6 +62,7 @@ namespace TaskManagement.API.Controllers
         }
         [HttpDelete]
         [Route("{Id:int}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteTask([FromRoute] int Id)
         {
             var result = await _taskService.DeleteTaskAsync(Id);

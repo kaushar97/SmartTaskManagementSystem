@@ -4,6 +4,7 @@ namespace TaskManagement.API.Repository
 {
     public interface IUserRepository
     {
-        Task <User?> GetByPublicIdAsync(Guid guid);
+        Task<UserProfile?> GetByPublicIdAsync(Guid guid);
+        Task<UserProfile> AddUserProfileAsync(UserProfile userProfile);
     }
 }

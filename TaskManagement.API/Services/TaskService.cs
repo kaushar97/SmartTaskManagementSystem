@@ -10,12 +10,10 @@ namespace TaskManagement.API.Services
     public class TaskService : ITaskService
     {
         private readonly ITaskRepository _taskRepository;
-        private readonly IUserRepository _userRepository;
 
-        public TaskService(ITaskRepository taskRepository, IUserRepository userRepository)
+        public TaskService(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
-            _userRepository = userRepository;
         }
 
         public async Task<TaskDTO> CreateTaskAsync(AddTaskRequestDTO addTaskRequestDTO)
@@ -64,6 +62,7 @@ namespace TaskManagement.API.Services
             var taskDomainModel = await _taskRepository.GetAllTasksAsync();
             var taskDTOs = taskDomainModel.Select(domain => new TaskDTO
             {
+                PublicId = domain.PublicId,
                 Title = domain.Title,
                 Description = domain.Description,
                 Status = domain.Status,
@@ -71,6 +70,7 @@ namespace TaskManagement.API.Services
                 DueDate = domain.DueDate,
                 AssignedToPublicId = domain.AssignedTo.PublicId,
                 CreatedDate = domain.CreatedDate,
+                AssignedToName = $"{domain.AssignedTo.FirstName} {domain.AssignedTo.LastName}"
             });
             return taskDTOs;
         }
@@ -88,6 +88,7 @@ namespace TaskManagement.API.Services
                 DueDate = taskDomainModel.DueDate,
                 AssignedToPublicId = taskDomainModel.AssignedTo.PublicId,
                 CreatedDate = taskDomainModel.CreatedDate,
+                AssignedToName = $"{taskDomainModel.AssignedTo.FirstName} {taskDomainModel.AssignedTo.LastName}"
             };
         }
         
@@ -105,6 +106,7 @@ namespace TaskManagement.API.Services
                 DueDate = taskDomainModel.DueDate,
                 AssignedToPublicId =  userDetails.PublicId,
                 CreatedDate = taskDomainModel.CreatedDate,
+                AssignedToName = $"{userDetails.FirstName} {userDetails.LastName}"
             };
         }
     }

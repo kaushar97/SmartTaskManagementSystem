@@ -14,5 +14,6 @@ namespace TaskManagement.API.Model.DTO
         public DateTime CreatedDate { get; set; }
         public DateTime DueDate { get; set; }
         public Guid? AssignedToPublicId { get; set; }
+        public string AssignedToName { get; set; } = string.Empty;
     }
 }
