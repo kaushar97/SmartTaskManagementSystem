@@ -27,6 +27,20 @@ namespace TaskManagement.API.Services
             };
         }
 
+        public async Task<UserDTO> GetByIdentityUserIdAsync(string identityUserId)
+        {
+            var userDomainModel = await _userRepository.GetByIdentityUserIdAsync(identityUserId);
+            if (userDomainModel == null) { return null; }
+            return new UserDTO
+            {
+                Id = userDomainModel.Id,
+                PublicId = userDomainModel.PublicId,
+                FirstName = userDomainModel.FirstName,
+                LastName = userDomainModel.LastName,
+                Email = userDomainModel.Email,
+            };
+        }
+
         public async Task<UserDTO?> GetByPublicIdAsync(Guid publicId)
         {
             var userDomainModel = await _userRepository.GetByPublicIdAsync(publicId);

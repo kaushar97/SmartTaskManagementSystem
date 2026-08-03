@@ -16,7 +16,19 @@ namespace TaskManagement.API.Repository
         }
         public string CreateJWTToken(IdentityUser user, List<string> roles)
         {
-            var claims = new List<Claim>();
+            var claims = new List<Claim>{
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    user.Id),
+
+                new Claim(
+                    ClaimTypes.Email,
+                    user.Email ?? string.Empty),
+
+                new Claim(
+                    ClaimTypes.Name,
+                    user.UserName ?? string.Empty)
+            };
 
             foreach (var role in roles)
             {

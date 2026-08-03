@@ -38,5 +38,12 @@ namespace TaskManagement.API.Controllers
                 ? Ok(result)
                 : BadRequest("Username or Password is wrong.");
         }
+
+        [HttpGet]
+        [Route("Health")]
+        public async Task<IActionResult> Health()
+        {
+            return Ok(new { status = "Healthy" });
+        }
     }
 }

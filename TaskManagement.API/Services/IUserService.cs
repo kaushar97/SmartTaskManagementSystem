@@ -7,5 +7,6 @@ namespace TaskManagement.API.Services
     {
         Task<UserDTO?> GetByPublicIdAsync(Guid publicId);
         Task<UserDTO> AddUserProfileAsync(UserProfile userProfile);
+        Task<UserDTO> GetByIdentityUserIdAsync(string identityUserId);
     }
 }
