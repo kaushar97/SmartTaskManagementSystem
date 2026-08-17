@@ -14,9 +14,8 @@ namespace TaskManagement.API.Model.Domain
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime DueDate { get; set; }
         public int AssignedToId { get; set; }
-
-        //Navigation property
-        [ForeignKey("AssignedToId")]
-        public User AssignedTo { get; set; } = null!;
+        public int CreatedById { get; set; }    
+        public UserProfile AssignedTo { get; set; } = null!;
+        public UserProfile CreatedBy { get; set; } = null!;
     }
 }

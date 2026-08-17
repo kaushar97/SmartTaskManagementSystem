@@ -1,7 +1,10 @@
-﻿namespace TaskManagement.API.Model.Domain
+﻿using System.ComponentModel;
+
+namespace TaskManagement.API.Model.Domain
 {
     public class Enum
     {
+        [TypeConverter(typeof(EnumConverter))]
         public enum TskStatus
         {
             Open = 1,
@@ -9,6 +12,7 @@
             OnHold = 3,
             Completed = 4,
         }
+        [TypeConverter(typeof(EnumConverter))]
         public enum TaskPriority
         {
             Urgent = 1,

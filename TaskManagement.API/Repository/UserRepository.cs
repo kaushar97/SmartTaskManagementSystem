@@ -11,9 +11,22 @@ namespace TaskManagement.API.Repository
         {
             _context = dbContext;
         }
-        public async Task<User?> GetByPublicIdAsync(Guid guid)
+
+        public async Task<UserProfile> AddUserProfileAsync(UserProfile userProfile)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.PublicId == guid);
+            await _context.UsersProfile.AddAsync(userProfile);
+            await _context.SaveChangesAsync();
+            return userProfile;
+        }
+
+        public Task<UserProfile?> GetByIdentityUserIdAsync(string identityUserId)
+        {
+            return _context.UsersProfile.FirstOrDefaultAsync(u => u.IdentityUserId == identityUserId);
+        }
+
+        public async Task<UserProfile?> GetByPublicIdAsync(Guid guid)
+        {
+            return await _context.UsersProfile.FirstOrDefaultAsync(u => u.PublicId == guid);
         }
     }
 }
