@@ -7,5 +7,6 @@ namespace TaskManagement.API.Repository
         Task<UserProfile?> GetByPublicIdAsync(Guid guid);
         Task<UserProfile> AddUserProfileAsync(UserProfile userProfile);
         Task<UserProfile?> GetByIdentityUserIdAsync(string identityUserId);
+        Task<IEnumerable<UserProfile>> GetAllAsync();
     }
 }
