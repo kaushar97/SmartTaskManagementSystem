@@ -19,6 +19,11 @@ namespace TaskManagement.API.Repository
             return userProfile;
         }
 
+        public async Task<IEnumerable<UserProfile>> GetAllAsync()
+        {
+            return await _context.UsersProfile.ToListAsync();
+        }
+
         public Task<UserProfile?> GetByIdentityUserIdAsync(string identityUserId)
         {
             return _context.UsersProfile.FirstOrDefaultAsync(u => u.IdentityUserId == identityUserId);

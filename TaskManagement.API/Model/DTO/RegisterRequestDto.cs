@@ -12,6 +12,6 @@ namespace TaskManagement.API.Model.DTO
 
         [DataType(DataType.Password)]
         public required string Password { get; set; }
-        public string[] Roles { get; set; }
+        public string[]? Roles { get; set; }
     }
 }

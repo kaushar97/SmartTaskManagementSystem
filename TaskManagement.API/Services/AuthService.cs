@@ -29,9 +29,9 @@ namespace TaskManagement.API.Services
             if (identityResult.Succeeded)
             {
                 //Add roles to the user
-                if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
-                {
-                    identityResult = await userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
+                //if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
+                //{
+                    identityResult = await userManager.AddToRoleAsync(identityUser, ApplicationRoles.Reader);
                     if (identityResult.Succeeded)
                     {
                         var userProfile = new UserProfile
@@ -51,7 +51,7 @@ namespace TaskManagement.API.Services
                             await userManager.DeleteAsync(identityUser);
                             throw new Exception("Failed to create user profile.");
                         }
-                    }
+                    //}
                 }
 
             }

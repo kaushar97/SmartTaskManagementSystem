@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Data;
 using TaskManagement.API.Model.Domain;
+using TaskManagement.API.Services;
+using static TaskManagement.API.Model.Domain.Enum;
 
 namespace TaskManagement.API.Controllers
 {
@@ -9,11 +11,18 @@ namespace TaskManagement.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly TaskManagementDbContext _context;
-        public UsersController(TaskManagementDbContext dbContext)
+        private readonly IUserService userService;
+
+        public UsersController(IUserService userService)
         {
-            _context = dbContext; 
+            this.userService = userService;
         }
-      
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await userService.GetAssignableUsersAsync();
+            return Ok(result);
+        }
+
     }
 }

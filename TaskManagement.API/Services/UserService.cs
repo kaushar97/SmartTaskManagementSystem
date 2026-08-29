@@ -27,6 +27,18 @@ namespace TaskManagement.API.Services
             };
         }
 
+        public async Task<IEnumerable<AssignableUsersResponseDto>> GetAssignableUsersAsync()
+        {
+            var usersDomainModel = await _userRepository.GetAllAsync();
+            var assignableUsers = usersDomainModel.Select(x => new AssignableUsersResponseDto
+            {
+                PublicId = x.PublicId,
+                FullName = $"{x.FirstName} {x.LastName}"
+            });
+
+            return assignableUsers;
+        }
+
         public async Task<UserDTO> GetByIdentityUserIdAsync(string identityUserId)
         {
             var userDomainModel = await _userRepository.GetByIdentityUserIdAsync(identityUserId);
