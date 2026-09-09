@@ -33,5 +33,11 @@ namespace TaskManagement.API.Repository
         {
             return await _context.UsersProfile.FirstOrDefaultAsync(u => u.PublicId == guid);
         }
+
+        public async Task<IEnumerable<TaskItem?>> GetMyTasksAsync(int Id)
+        {
+            var records = _context.TaskItems.Where(x => x.AssignedToId == Id);
+            return records;
+        }
     }
 }
