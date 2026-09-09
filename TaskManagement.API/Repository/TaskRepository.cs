@@ -89,6 +89,7 @@ namespace TaskManagement.API.Repository
             if (existingTask == null) { return null; }
 
             existingTask.AssignedToId = userId;
+            existingTask.Description = (taskItem.Description.Equals("") || taskItem.Description == existingTask.Description) ? existingTask.Description : taskItem.Description;
             existingTask.Status = (taskItem.Status.Equals("") || taskItem.Status == existingTask.Status) ? existingTask.Status : taskItem.Status;
             existingTask.DueDate = (taskItem.DueDate.Equals("") || taskItem.DueDate == existingTask.DueDate) ? existingTask.DueDate : taskItem.DueDate;
             existingTask.Priority = (taskItem.Priority.Equals("") || taskItem.Priority == existingTask.Priority) ? existingTask.Priority : taskItem.Priority;

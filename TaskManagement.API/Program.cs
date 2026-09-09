@@ -13,6 +13,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var logger = new LoggerConfiguration()
     .WriteTo.File("Logs/STManagement_Log.txt", rollingInterval: RollingInterval.Minute)
     .MinimumLevel.Warning()
@@ -79,6 +94,8 @@ if (app.Environment.IsDevelopment())
 {
     //app.MapOpenApi();
 }
+
+app.UseCors("FrontendPolicy");
 
 app.UseMiddleware<ExceptionalHandlerMiddleware>();
 

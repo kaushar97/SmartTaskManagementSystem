@@ -9,5 +9,8 @@ namespace TaskManagement.API.Services
         Task<UserDTO> AddUserProfileAsync(UserProfile userProfile);
         Task<UserDTO> GetByIdentityUserIdAsync(string identityUserId);
         Task<IEnumerable<AssignableUsersResponseDto>> GetAssignableUsersAsync();
+        Task<IEnumerable<TaskDTO?>> GetMyTasksAsync();
+        Task<UpdateUserRoleResponseDto?> UpdateUserRoleAsync(Guid publicId, UpdateUserRoleRequestDto request);
+        Task<IEnumerable<UserManagementResponseDto>> GetUserManagementUsersAsync();
     }
 }

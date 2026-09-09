@@ -7,6 +7,7 @@ namespace TaskManagement.API.Model.DTO
     public class UpdateTaskRequestDTO
     {
         public string? Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TskStatus Status { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
