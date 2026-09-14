@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using TaskManagement.API.Configuration;
 using TaskManagement.API.Data;
+using TaskManagement.API.Data.Seeder;
 using TaskManagement.API.Middlewares;
 using TaskManagement.API.Repository;
 using TaskManagement.API.Services;
@@ -70,8 +72,15 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequiredUniqueChars = 15;
 });
+
+// Seed configuration
+
+builder.Services.Configure<SeedDataOptions>(
+    builder.Configuration.GetSection("SeedData"));
+
+builder.Services.AddScoped<IdentitySeeder>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -88,6 +97,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+await app.SeedIdentityAsync(); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
