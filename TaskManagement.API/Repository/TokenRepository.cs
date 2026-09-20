@@ -43,7 +43,7 @@ namespace TaskManagement.API.Repository
                 configuration["Jwt:Issuer"],
                 configuration["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

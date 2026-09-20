@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using TaskManagement.API.Configuration;
 using TaskManagement.API.Data;
+using TaskManagement.API.Data.Seeder;
 using TaskManagement.API.Middlewares;
 using TaskManagement.API.Repository;
 using TaskManagement.API.Services;
@@ -41,10 +43,12 @@ builder.Services.AddControllers();
 //builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<TaskManagementDbContext>(options => 
-options.UseSqlServer(builder.Configuration.GetConnectionString("STMConnectionString")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("STMConnectionString"),
+sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddDbContext<TaskManagementAuthDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("STMAuthConnectionString")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("STMAuthConnectionString"),
+sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -73,6 +77,13 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 });
 
+// Seed configuration
+
+builder.Services.Configure<SeedDataOptions>(
+    builder.Configuration.GetSection("SeedData"));
+
+builder.Services.AddScoped<IdentitySeeder>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     options.TokenValidationParameters = new TokenValidationParameters
@@ -88,6 +99,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+await app.SeedIdentityAsync(); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
