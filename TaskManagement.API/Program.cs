@@ -43,10 +43,12 @@ builder.Services.AddControllers();
 //builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<TaskManagementDbContext>(options => 
-options.UseSqlServer(builder.Configuration.GetConnectionString("STMConnectionString")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("STMConnectionString"),
+sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddDbContext<TaskManagementAuthDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("STMAuthConnectionString")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("STMAuthConnectionString"),
+sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -72,7 +74,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 15;
+    options.Password.RequiredUniqueChars = 1;
 });
 
 // Seed configuration
